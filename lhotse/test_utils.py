@@ -5,6 +5,7 @@ from lhotse.cut import Cut
 from lhotse.features import Features, FeatureSet
 from lhotse.manipulation import Manifest
 from lhotse.supervision import SupervisionSegment, SupervisionSet
+from lhotse.utils import fastcopy
 
 
 # noinspection PyPep8Naming
@@ -47,8 +48,9 @@ def dummy_features(unique_id: int) -> Features:
         num_frames=100,
         num_features=20,
         sampling_rate=16000,
-        storage_type='lilcom',
-        storage_path='irrelevant'
+        storage_type='irrelevant',
+        storage_path='irrelevant',
+        storage_key='irrelevant'
     )
 
 
@@ -61,3 +63,9 @@ def dummy_cut(id: str = 'irrelevant', start: float = 0.0, duration: float = 1.0,
         features=dummy_features(0),
         supervisions=supervisions if supervisions is not None else [],
     )
+
+
+def remove_spaces_from_segment_text(segment):
+    if segment.text is None:
+        return segment
+    return fastcopy(segment, text=segment.text.replace(' ', ''))
